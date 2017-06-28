@@ -31,7 +31,6 @@ using Ch.Cyberduck.Core.Editor;
 using Ch.Cyberduck.Properties;
 using java.security;
 using java.util;
-using java.io;
 using org.apache.log4j;
 using sun.security.mscapi;
 
@@ -412,7 +411,7 @@ namespace Ch.Cyberduck.Core.Preferences
                 appender.setMaxBackupIndex(0);
                 root.addAppender(appender);
             }
-            catch (FileNotFoundException e)
+            catch (java.io.FileNotFoundException e)
             {
                 // Ignore failure
             }
