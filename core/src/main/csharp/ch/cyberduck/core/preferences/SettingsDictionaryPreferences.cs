@@ -31,6 +31,7 @@ using Ch.Cyberduck.Core.Editor;
 using Ch.Cyberduck.Properties;
 using java.security;
 using java.util;
+using java.io;
 using org.apache.log4j;
 using sun.security.mscapi;
 
@@ -401,13 +402,20 @@ namespace Ch.Cyberduck.Core.Preferences
         {
             base.post();
             Logger root = Logger.getRootLogger();
-            var fileName = Path.Combine(getProperty("application.support.path"),
-                getProperty("application.name").ToLower().Replace(" ", "") + ".log");
-            RollingFileAppender appender = new RollingFileAppender(new PatternLayout(@"%d [%t] %-5p %c - %m%n"),
-                fileName, true);
-            appender.setMaxFileSize("10MB");
-            appender.setMaxBackupIndex(0);
-            root.addAppender(appender);
+            try
+            {
+                var fileName = Path.Combine(getProperty("application.support.path"),
+                    getProperty("application.name").ToLower().Replace(" ", "") + ".log");
+                RollingFileAppender appender = new RollingFileAppender(new PatternLayout(@"%d [%t] %-5p %c - %m%n"),
+                    fileName, true);
+                appender.setMaxFileSize("10MB");
+                appender.setMaxBackupIndex(0);
+                root.addAppender(appender);
+            }
+            catch (FileNotFoundException e)
+            {
+                // Ignore failure
+            }
             if (Debugger.IsAttached)
             {
                 root.setLevel(Level.DEBUG);
