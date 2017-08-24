@@ -19,7 +19,13 @@ import ch.cyberduck.core.sds.io.swagger.client.ApiClient;
 
 import org.apache.http.impl.client.CloseableHttpClient;
 
-public class SDSApiClient extends ApiClient {
+import javax.ws.rs.ext.ContextResolver;
+import javax.ws.rs.ext.Provider;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+@Provider
+public class SDSApiClient extends ApiClient implements ContextResolver<ObjectMapper> {
 
     private CloseableHttpClient client;
 
@@ -29,5 +35,10 @@ public class SDSApiClient extends ApiClient {
 
     public CloseableHttpClient getClient() {
         return client;
+    }
+
+    @Override
+    public ObjectMapper getContext(final Class<?> type) {
+        return this.getJSON().getContext(type);
     }
 }
